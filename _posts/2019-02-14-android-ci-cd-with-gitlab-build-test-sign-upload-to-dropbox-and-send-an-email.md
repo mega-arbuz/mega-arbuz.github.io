@@ -159,10 +159,7 @@ We will use Zapier with Gmail integration for emails. Go to [Zapier Home](https:
 ```
 Send a POST request, with this JSON, to the URL that was given by Zapier. Let’s say your URL was https://hooks.zapier.com/hooks/catch/12345/abcd/, the cURL will look like this:
 
-<figure align="center">
-  <script src="https://gist.github.com/mega-arbuz/57e5b2b24238bedf08466b8afb6cebcb.js"></script>
-  <figcaption>Type your real email address — we will use it for tests later.</figcaption>
-</figure>
+{% include embed.html src="https://gist.github.com/mega-arbuz/57e5b2b24238bedf08466b8afb6cebcb.js" caption="Type your real email address — we will use it for tests later." %}
 
 Now click **Ok, I did this** and Zapier will show you the incoming hook. Select it and click “Continue”.
 
@@ -182,10 +179,7 @@ Write whatever you want in the _From Name_ field. My setup ended up looking like
 
 Hit the **Continue** button and **Send To Test Gmail**. If you get the green message — everything is ok (you should also receive an email to provided address). Hit **Finish**, name your Zap and turn it on. Now let’s make the real test — use your Zap URL to run the cURL request (or postman) again.
 
-<figure align="center">
-  <script src="https://gist.github.com/mega-arbuz/57e5b2b24238bedf08466b8afb6cebcb.js"></script>
-  <figcaption>Try different values in subject and body fields.</figcaption>
-</figure>
+{% include embed.html src="https://gist.github.com/mega-arbuz/57e5b2b24238bedf08466b8afb6cebcb.js" caption="Try different values in subject and body fields." %}
 
 Make sure you received an email from your connected Gmail account and we are ready for the next step.
 
@@ -231,9 +225,7 @@ The paths in the job are matching my project structure from the [GitLab sample p
 
 The _.gitlab-ci.yml_ file is completed and the result should look like this:
 
-<figure align="center">
-  <script src="https://gist.github.com/mega-arbuz/927a51708251b91b8acea2bb75a330b8.js"></script>
-</figure>
+{% include embed.html src="https://gist.github.com/mega-arbuz/927a51708251b91b8acea2bb75a330b8.js" %}
 
 ## 10. CHANGELOG and TEMPLATE
 The deploy script uses CHANGELOG and TEMPLATE files for email composing. These files are also documented in the [deploy script GitHub](https://github.com/mega-arbuz/apk-release-deploy).
@@ -298,46 +290,34 @@ The full script is available in [this GitHub project](https://github.com/mega-ar
 ### App Version and File
 Before we send anything, we want to know the version of our build and the path to the APK file. This information is stored in the _output.json_ file, generated in the _release_ directory. Luckily, we received the path to _release_ directory from previous steps.
 
-<figure align="center">
-  <script src="https://gist.github.com/mega-arbuz/b55ab39ca27d8d48e47a34f7298251d8.js"></script>
-</figure>
+{% include embed.html src="https://gist.github.com/mega-arbuz/b55ab39ca27d8d48e47a34f7298251d8.js" %}
 
 ### Uploaded File Name
 We want our file name to be safe (without spaces and dots) and have some useful info, like app name and version. For an app called “Best App Ever” and build _version 1.05_, we will get the name: _bestappever\_1\_05.apk_.
 
-<figure align="center">
-  <script src="https://gist.github.com/mega-arbuz/9073fccc6e6ad57c371c7957b2b4bb0c.js"></script>
-</figure>
+{% include embed.html src="https://gist.github.com/mega-arbuz/9073fccc6e6ad57c371c7957b2b4bb0c.js" %}
 
 ### Dropbox Upload
 Dropbox supports _add_ and _overwrite_ upload modes — we will use the _overwrite_ mode, just in case. There is also an issue with getting shareable URLs — if the file was shared earlier, the request will return an error, which means that we have to make another call to check if the file was shared. This is a bit dangerous because our overwritten file will have the same URL as the old one. In order to avoid all these issues, the script will send a delete request at the beginning, so that we start the process knowing that there are no files with the same name.
 
-<figure align="center">
-  <script src="https://gist.github.com/mega-arbuz/5d8734ca69ef3bb852e6dbdfaf76d2fd.js"></script>
-</figure>
+{% include embed.html src="https://gist.github.com/mega-arbuz/5d8734ca69ef3bb852e6dbdfaf76d2fd.js" %}
 
 We configure our Dropbox request arguments: `mode=overwrite`, `autorename=True` and `requested_visibility=public`. The upload method constructs the file path, using `dropbox.folder` argument and app name, sends a delete request, uploads the file and sends a request for shareable URL. The returned URL is taking us to Dropbox download page — we don’t want this, so we change the last digit from ‘0’ to ‘1’, which will take us to direct download.
 
 ### Changes
 We get the changes from the CHANGELOG file. The process was described in previous steps so here is the code:
 
-<figure align="center">
-  <script src="https://gist.github.com/mega-arbuz/a3a87ed7ed1a8e7d6ba3df4f6d04d680.js"></script>
-</figure>
+{% include embed.html src="https://gist.github.com/mega-arbuz/a3a87ed7ed1a8e7d6ba3df4f6d04d680.js" %}
 
 ### Compose Email
 Now we have our app name, app version, download URL and the latest changes. All this information goes to our TEMPLATE file. The result will be — subject and body for our email.
 
-<figure align="center">
-  <script src="https://gist.github.com/mega-arbuz/92b5de6f6ad9aea81ee311115ba9ab7e.js"></script>
-</figure>
+{% include embed.html src="https://gist.github.com/mega-arbuz/92b5de6f6ad9aea81ee311115ba9ab7e.js" %}
 
 ### Send Email
 This one is simple — we use our data structure from the Zapier webhook setup.
 
-<figure align="center">
-  <script src="https://gist.github.com/mega-arbuz/c7146a9f6c808f89752b70ee284e7da0.js"></script>
-</figure>
+{% include embed.html src="https://gist.github.com/mega-arbuz/c7146a9f6c808f89752b70ee284e7da0.js" %}
 
 ## 12. Resources
 GitLab project with everything described in this article.
