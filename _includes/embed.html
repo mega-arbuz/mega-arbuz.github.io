@@ -1,0 +1,10 @@
+<div>
+    {% if include.caption %}
+        <figure align="center">
+            <script src="{{ include.src }}"></script>
+            <figcaption>{{ include.caption }}</figcaption>
+        </figure>
+    {% else %}
+        <script src="{{ include.src }}"></script>
+    {% endif %}
+</div>
