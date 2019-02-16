@@ -10,8 +10,7 @@ layout: default
 
   <ul class="post-list">
     {% for post in site.posts %}
-    {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-    {% if postyear == '2001' %}
+    {% if post.hidden %}
       <li>
         {% if post.cover %}
             <img src="{{ post.cover }}" style="
